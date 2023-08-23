@@ -39,6 +39,20 @@
     useNumbers();
     updateAvailableNums();
     updateOptions();
+    if (checkGameOver()) {
+      handleGameOver();
+    }
+  };
+
+  const useNumbers = function() {
+    for (i = 0; i < n; i++) {
+      if (selectedNums[i]) {
+        availableNums[i] = false;
+        selectedNums[i] = false;
+        usedNums[i] = true;
+      }
+    }
+    calculateScore();
   };
 
   const calculateScore = function() {
@@ -52,25 +66,39 @@
     checkWin();
   };
 
-  const checkWin() {
+  const checkWin = function() {
     if (score == 0) {
-      console.log("You shut the box!");
-      // More code will eventually go here for what I want the app to do when
-      //  the player successfully shuts the box.
-      // Probably just put some text on the screen congratulating them and 
-      //  highlight the New Game button.
+      return true;
     }
+    return false;
   };
 
-  const useNumbers = function() {
-    for (i = 0; i < n; i++) {
-      if (selectedNums[i]) {
-        availableNums[i] = false;
-        selectedNums[i] = false;
-        usedNums[i] = true;
-      }
+  const checkLose = function() {
+    if (checkWin()) {
+      return false;
     }
-    calculateScore();
+    if (availableNums.every((x) => !x) && selectedNums.every((x) => !x)) {
+      return true;
+    }
+    return false;
+  };
+
+  const checkGameOver = function() {
+    if (checkWin()) {
+      return true;
+    } else if (checkLose()) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleGameOver = function() {
+    if (checkWin()) {
+      console.log("You shut the box!");
+    } else if (checkLose()) {
+      console.log("—— GAME OVER ——");
+      console.log("Final Score: " + score);
+    }
   };
 
   const updateOptions = function() {
@@ -100,17 +128,23 @@
     } else {
       rollButton.classList.add("disabled");
     }
+    let newGameButton = document.getElementById("newGameButton");
+    if (checkGameOver()) {
+      newGameButton.classList.add("emphasized");
+    } else {
+      newGameButton.classList.remove("emphasized");
+    }
   };
   
   const checkSolutions = function() {
-    triviallyAvailableNums = [];
+    unusedNums = [];
     for (i = n-1; i >= 0; i--) {
-      if (availableNums[i]) {
-        triviallyAvailableNums.push(i+1);
+      if (!usedNums[i] && !selectedNums[i]) {
+        unusedNums.push(i+1);
       }
     }
-    solutions = checkSolutionsHelper(triviallyAvailableNums, sum, 0);
-    console.log(solutions);
+    solutions = checkSolutionsHelper(unusedNums, sum - tempSum, 0);
+    //console.log(solutions);
     return solutions;
   };
   
@@ -142,17 +176,10 @@
 
   const updateAvailableNums = function() {
     //console.log("Updating available nums...");
-    /*
+    let solutions = checkSolutions();
+    solutions = solutions.flat();
     for (let i = 0; i < n; i++) {
-      if (!usedNums[i] && i+1 <= sum - tempSum) {
-        availableNums[i] = true;
-      } else if (!selectedNums[i]) {
-        availableNums[i] = false;
-      }
-    }
-    */
-    for (let i = 0; i < n; i++) {
-      if (!usedNums[i] && i+1 <= sum - tempSum) {
+      if (!usedNums[i] && solutions.includes(i+1)) {
         availableNums[i] = true;
       } else if (!selectedNums[i]) {
         availableNums[i] = false;
@@ -161,15 +188,17 @@
   };
 
   const selectNumber = function(num) {
-    if (usedNums[num-1] || !availableNums[num-1]) {
+    if (usedNums[num-1] || (!availableNums[num-1] && !selectedNums[num-1])) {
       return null;
     }
     if (selectedNums[num-1]) {
       selectedNums[num-1] = false;
+      availableNums[num-1] = true;
       tempSum -= num;
     } else {
-      if (num <= sum - tempSum) {
+      if (availableNums[num-1]) {
         selectedNums[num-1] = true;
+        availableNums[num-1] = false;
         tempSum += num;
       }
     }
@@ -178,7 +207,6 @@
   };
   
   const newGame = function() {
-    console.log("Final Score: " + score.toString());
     sum = 0;
     tempSum = 0;
     score = (n*(n+1))/2;
@@ -198,7 +226,17 @@
     console.log("usedNums = " + usedNums.toString());
   };
 
+  document.addEventListener("keypress", function(event) {
+    if (event.keyCode == 13) {
+      newGame();
+    }
+    if (event.keyCode == 32) {
+      rollDice();
+    }
+  });
+
   const main = function() {
+    console.log(availableNums.every((x) => x));
     rollDice();
   };
 
@@ -225,8 +263,14 @@
       <div id="dice2" class="dice" onclick="checkSolutions()">–</div>
     </div>
     <div id="buttonWrapper" class="wrapper">
-      <div id="rollDiceButton" class="button disabled" onclick="rollDice()">Roll</div>
-      <div id="NewGameButton" class="button" onclick="newGame()">New Game</div>
+      <div id="rollDiceButton" class="button disabled" onclick="rollDice()">
+        <div>Roll</div>
+        <div>(space bar)</div>
+      </div>
+      <div id="newGameButton" class="button" onclick="newGame()">
+        <div>New Game</div>
+        <div>(enter key)</div>
+      </div>
     </div>
   </div>
 </body>
