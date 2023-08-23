@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="description" content="Shut the Box">
+  <meta name="author" content="Chris Mitchell">
+  <meta charset="UTF-8">
+  <title>Shut the Box</title>
+  <link rel="stylesheet" href="main.css">
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<script>
+
+  let sum = 0;
+  let tempSum = 0;
+  let n = 9;
+  let score = (n*(n+1))/2;
+  let availableNums = [true, true, true, true, true, true, true, true, true];
+  let usedNums = [false, false, false, false, false, false, false, false, false];
+  let selectedNums = [false, false, false, false, false, false, false, false, false];
+
+  const rollDice = function() {
+    if (sum != tempSum) {
+      console.log("You must choose a combination of available tiles that add up to a total of " + sum.toString() + " before you may reroll.");
+      return null;
+    }
+    sum = 0;
+    tempSum = 0;
+    let dice = document.getElementsByClassName("dice");
+    for (let i = 0; i < dice.length; i++) {
+      let roll = Math.floor(Math.random() * 6) + 1;
+      sum += roll;
+      dice.item(i).innerHTML = roll.toString();
+    }
+    let rollButton = document.getElementById("rollDiceButton");
+    rollButton.classList.add("disabled");
+    useNumbers();
+    updateAvailableNums();
+    updateOptions();
+  };
+
+  const calculateScore = function() {
+    score = (n*(n+1))/2;
+    for (i = 0; i < n; i++) {
+      if (usedNums[i]) {
+        score -= (i+1);
+      }
+    }
+    console.log("Score: " + score.toString());
+    checkWin();
+  };
+
+  const checkWin() {
+    if (score == 0) {
+      console.log("You shut the box!");
+      // More code will eventually go here for what I want the app to do when
+      //  the player successfully shuts the box.
+      // Probably just put some text on the screen congratulating them and 
+      //  highlight the New Game button.
+    }
+  };
+
+  const useNumbers = function() {
+    for (i = 0; i < n; i++) {
+      if (selectedNums[i]) {
+        availableNums[i] = false;
+        selectedNums[i] = false;
+        usedNums[i] = true;
+      }
+    }
+    calculateScore();
+  };
+
+  const updateOptions = function() {
+    for (i = 0; i < n; i++) {
+      numButton = document.getElementById("button" + (i+1).toString());
+      if (selectedNums[i]) {
+        numButton.classList.add("selected");
+      } else {
+        numButton.classList.remove("selected");
+      }
+      if (availableNums[i]) {
+        numButton.classList.add("available");
+        numButton.classList.remove("unavailable");
+      } else {
+        numButton.classList.add("unavailable");
+        numButton.classList.remove("available");
+      }
+      if (usedNums[i]) {
+        numButton.classList.add("used");
+      } else {
+        numButton.classList.remove("used");
+      }
+    }
+    let rollButton = document.getElementById("rollDiceButton");
+    if (sum == tempSum) {
+      rollButton.classList.remove("disabled");
+    } else {
+      rollButton.classList.add("disabled");
+    }
+  };
+  
+  const checkSolutions = function() {
+    triviallyAvailableNums = [];
+    for (i = n-1; i >= 0; i--) {
+      if (availableNums[i]) {
+        triviallyAvailableNums.push(i+1);
+      }
+    }
+    solutions = checkSolutionsHelper(triviallyAvailableNums, sum, 0);
+    console.log(solutions);
+    return solutions;
+  };
+  
+  // k = new sum for recursive call
+  // i = pointer for where to start iterating in this recursive call
+  const checkSolutionsHelper = function(arr, k, i) {
+    let solutions = [];
+    for (let j = i; k <= tri(arr[j]); j++) {
+      let subSolutions = [];
+      //console.log("Trying " + arr[j].toString());
+      if (arr[j] == k) {
+        //console.log("Finishing with " + arr[j].toString());
+        subSolutions.push([]);
+      }
+      if (arr[j] < k) {
+        //console.log("Continuing with " + arr[j].toString());
+        subSolutions = checkSolutionsHelper(arr, k - arr[j], j+1);
+      }
+      for (let s = 0; s < subSolutions.length; s++) {
+        solutions.push([arr[j]].concat(subSolutions[s]));
+      }
+    }
+    return solutions;
+  };
+          
+  const tri = function(x) {
+    return (x*(x+1))/2;
+  };
+
+  const updateAvailableNums = function() {
+    //console.log("Updating available nums...");
+    /*
+    for (let i = 0; i < n; i++) {
+      if (!usedNums[i] && i+1 <= sum - tempSum) {
+        availableNums[i] = true;
+      } else if (!selectedNums[i]) {
+        availableNums[i] = false;
+      }
+    }
+    */
+    for (let i = 0; i < n; i++) {
+      if (!usedNums[i] && i+1 <= sum - tempSum) {
+        availableNums[i] = true;
+      } else if (!selectedNums[i]) {
+        availableNums[i] = false;
+      }
+    }
+  };
+
+  const selectNumber = function(num) {
+    if (usedNums[num-1] || !availableNums[num-1]) {
+      return null;
+    }
+    if (selectedNums[num-1]) {
+      selectedNums[num-1] = false;
+      tempSum -= num;
+    } else {
+      if (num <= sum - tempSum) {
+        selectedNums[num-1] = true;
+        tempSum += num;
+      }
+    }
+    updateAvailableNums();
+    updateOptions();
+  };
+  
+  const newGame = function() {
+    console.log("Final Score: " + score.toString());
+    sum = 0;
+    tempSum = 0;
+    score = (n*(n+1))/2;
+    availableNums = [true, true, true, true, true, true, true, true, true];
+    usedNums = [false, false, false, false, false, false, false, false, false];
+    selectedNums = [false, false, false, false, false, false, false, false, false];
+    rollDice();
+  };
+
+  const debugVals = function() {
+    console.log("sum = " + sum.toString());
+    console.log("tempSum = " + tempSum.toString());
+    console.log("n = " + n.toString());
+    console.log("score = " + score.toString());
+    console.log("availableNums = " + availableNums.toString());
+    console.log("selectedNums = " + selectedNums.toString());
+    console.log("usedNums = " + usedNums.toString());
+  };
+
+  const main = function() {
+    rollDice();
+  };
+
+</script>
+
+<body onload="main()">
+  <h2>Shut the Box</h2>
+  
+  <div id="instructions"></div>
+  <div id="gameWrapper" class="wrapper">
+    <div id="numbersWrapper" class="wrapper">
+      <div id="button1" class="numberButton" onclick="selectNumber(1)">1</div>
+      <div id="button2" class="numberButton" onclick="selectNumber(2)">2</div>
+      <div id="button3" class="numberButton" onclick="selectNumber(3)">3</div>
+      <div id="button4" class="numberButton" onclick="selectNumber(4)">4</div>
+      <div id="button5" class="numberButton" onclick="selectNumber(5)">5</div>
+      <div id="button6" class="numberButton" onclick="selectNumber(6)">6</div>
+      <div id="button7" class="numberButton" onclick="selectNumber(7)">7</div>
+      <div id="button8" class="numberButton" onclick="selectNumber(8)">8</div>
+      <div id="button9" class="numberButton" onclick="selectNumber(9)">9</div>
+    </div>
+    <div id="diceWrapper" class="wrapper">
+      <div id="dice1" class="dice" onclick="debugVals()">–</div>
+      <div id="dice2" class="dice" onclick="checkSolutions()">–</div>
+    </div>
+    <div id="buttonWrapper" class="wrapper">
+      <div id="rollDiceButton" class="button disabled" onclick="rollDice()">Roll</div>
+      <div id="NewGameButton" class="button" onclick="newGame()">New Game</div>
+    </div>
+  </div>
+</body>
+
+</html>

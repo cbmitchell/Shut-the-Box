@@ -1,0 +1,96 @@
+h2 {
+  margin: auto;
+  text-align: center;
+}
+
+.button {
+  width: 40%;
+  height: 100%;
+  margin-left: 5%;
+  float: left;
+  background-color: rgb(64, 231, 237);
+  text-align: center;
+}
+
+#rollDiceButton.disabled {
+  cursor: default;
+  background-color: rgb(161, 237, 240);
+  color: grey;
+}
+
+#gameWrapper {
+  margin: auto;
+}
+
+.wrapper {
+  width: 400px;
+  margin-top: 24px;
+}
+
+.dice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 100%;
+  margin-left: 5%;
+  float: left;
+  background-color: lightblue;
+  text-align: center;
+}
+
+#diceWrapper {
+  height: 100px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.numberButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  margin-left: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  float: left;
+}
+
+.numberButton.available {
+  background-color: lightgreen;
+}
+
+.numberButton.available:hover{
+  width: 94px;
+  height: 94px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.numberButton.unavailable {
+  background-color: rgb(152, 219, 145);
+  color: gray;
+}
+
+.numberButton.selected:hover{
+  width: 94px;
+  height: 94px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.numberButton.selected {
+  background-color: rgb(100, 201, 83);
+}
+
+.numberButton.used {
+  background-color: rgb(164, 173, 163);
+  color: gray;
+}
+
+#numbersWrapper {
+  height: 400px;
+}
