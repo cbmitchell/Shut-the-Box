@@ -3,6 +3,10 @@ h2 {
   text-align: center;
 }
 
+div {
+  box-sizing: border-box;
+}
+
 #buttonWrapper {
   height: 100px;
 }
@@ -17,6 +21,7 @@ h2 {
   background-color: rgb(64, 231, 237);
   align-items: center;
   justify-content: center;
+  border-radius: 10px;
 }
 
 .button > div {
@@ -35,8 +40,6 @@ h2 {
 
 .button.emphasized {
   border: 3px solid black;
-  width: 154px;
-  height: 94px;
 }
 
 #gameWrapper {
@@ -59,6 +62,8 @@ h2 {
   float: left;
   background-color: lightblue;
   text-align: center;
+  font-size: 32px;
+  border-radius: 10px;
 }
 
 #diceWrapper {
@@ -79,6 +84,7 @@ h2 {
   margin-top: 20px;
   border-radius: 10px;
   float: left;
+  font-size: 32px;
 }
 
 .numberButton.available {
@@ -86,8 +92,6 @@ h2 {
 }
 
 .numberButton.available:hover{
-  width: 94px;
-  height: 94px;
   border: 3px solid black;
   cursor: pointer;
 }
@@ -98,8 +102,6 @@ h2 {
 }
 
 .numberButton.selected:hover{
-  width: 94px;
-  height: 94px;
   border: 3px solid black;
   cursor: pointer;
 }

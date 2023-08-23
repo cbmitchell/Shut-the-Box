@@ -17,9 +17,9 @@
   let tempSum = 0;
   let n = 9;
   let score = (n*(n+1))/2;
-  let availableNums = [true, true, true, true, true, true, true, true, true];
-  let usedNums = [false, false, false, false, false, false, false, false, false];
-  let selectedNums = [false, false, false, false, false, false, false, false, false];
+  let availableNums = Array(n).fill(true);
+  let usedNums = Array(n).fill(false);
+  let selectedNums = Array(n).fill(false);
 
   const rollDice = function() {
     if (sum != tempSum) {
@@ -210,9 +210,9 @@
     sum = 0;
     tempSum = 0;
     score = (n*(n+1))/2;
-    availableNums = [true, true, true, true, true, true, true, true, true];
-    usedNums = [false, false, false, false, false, false, false, false, false];
-    selectedNums = [false, false, false, false, false, false, false, false, false];
+    availableNums = Array(n).fill(true);
+    usedNums = Array(n).fill(false);
+    selectedNums = Array(n).fill(false);
     rollDice();
   };
 
