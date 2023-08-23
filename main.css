@@ -1,3 +1,7 @@
+body {
+  font-family: 'Inter', sans-serif;
+}
+
 h2 {
   margin: auto;
   text-align: center;
@@ -16,9 +20,10 @@ div {
 .button {
   display: flex;
   flex-direction: column;
-  width: 160px;
+  width: 148px;
   height: 100px;
-  margin-left: 20px;
+  margin-left: 16px;
+  margin-right: 16px;
   float: left;
   background-color: rgb(64, 231, 237);
   align-items: center;
@@ -40,6 +45,10 @@ div {
   color: grey;
 }
 
+#buttonWrapper {
+  margin-top: 20px;
+}
+
 .button.emphasized {
   border: 3px solid black;
 }
@@ -51,7 +60,6 @@ div {
 .wrapper {
   width: 360px;
   height: 100px;
-  margin-top: 20px;
 }
 
 .dice {

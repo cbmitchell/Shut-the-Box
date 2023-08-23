@@ -10,13 +10,19 @@
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <script type="text/javascript" src="jquery.js"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <script>
 
   let sum = 0;
   let tempSum = 0;
-  let n = 64;
+  let n = 12;
+  let numDice = Math.ceil(n*(4/18));
   let score = (n*(n+1))/2;
   let availableNums = Array(n).fill(true);
   let usedNums = Array(n).fill(false);
@@ -25,8 +31,8 @@
   const TOTAL_WIDTH_IN_PIXELS = 360;
 
   const setupNumButtons = function() {
-    const numRows = Math.ceil(Math.sqrt(n));
-    const numCols = Math.floor(Math.sqrt(n));
+    const numRows = Math.floor(Math.sqrt(n));
+    const numCols = Math.ceil(Math.sqrt(n));
     const cellWidth = TOTAL_WIDTH_IN_PIXELS / numCols;
     const cellHeight = cellWidth;
     const numbersWrapper = document.getElementById("numbersWrapper");
@@ -42,8 +48,27 @@
       cellNode.style.width = (cellWidth * 0.8).toString() + "px";
       cellNode.style.height = (cellWidth * 0.8).toString() + "px";
       cellNode.style.marginTop = (cellWidth * 0.2).toString() + "px";
-      cellNode.style.marginLeft = (cellWidth * 0.2).toString() + "px";
+      cellNode.style.marginLeft = (cellWidth * 0.1).toString() + "px";
+      cellNode.style.marginRight = (cellWidth * 0.1).toString() + "px";
       numbersWrapper.appendChild(cellNode);
+    }
+  };
+
+  const setupDice = function() {
+    const dieWidth = TOTAL_WIDTH_IN_PIXELS / numDice;
+    const diceWrapper = document.getElementById("diceWrapper");
+    diceWrapper.style.width = TOTAL_WIDTH_IN_PIXELS.toString() + "px";
+    diceWrapper.style.height = Math.min(dieWidth, 120).toString() + "px";
+    for (let die = 0; die < numDice; die++) {
+      const dieNode = document.createElement("div");
+      dieNode.classList.add("dice");
+      dieNode.style.width = (dieWidth * 0.8).toString() + "px";
+      dieNode.style.height = (dieWidth * 0.8).toString() + "px";
+      dieNode.style.marginTop = Math.min((dieWidth * 0.2), 20).toString() + "px";
+      dieNode.style.marginLeft = (dieWidth * 0.1).toString() + "px";
+      dieNode.style.marginRight = (dieWidth * 0.1).toString() + "px";
+      dieNode.style.maxHeight = "100px";
+      diceWrapper.appendChild(dieNode);
     }
   };
 
@@ -263,6 +288,7 @@
 
   const main = function() {
     setupNumButtons();
+    setupDice();
     rollDice();
   };
 
@@ -273,11 +299,8 @@
   
   <div id="instructions"></div>
   <div id="gameWrapper" class="wrapper">
-    <div id="numbersWrapper" class=""></div>
-    <div id="diceWrapper" class="wrapper">
-      <div id="dice1" class="dice" onclick="debugVals()">–</div>
-      <div id="dice2" class="dice" onclick="checkSolutions()">–</div>
-    </div>
+    <div id="numbersWrapper"></div>
+    <div id="diceWrapper" class="wrapper"></div>
     <div id="buttonWrapper" class="wrapper">
       <div id="rollDiceButton" class="button disabled" onclick="rollDice()">
         <div>Roll</div>
