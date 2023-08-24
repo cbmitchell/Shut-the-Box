@@ -20,10 +20,10 @@ div {
 .button {
   display: flex;
   flex-direction: column;
-  width: 148px;
+  width: 28%;
   height: 100px;
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
   float: left;
   background-color: rgb(64, 231, 237);
   align-items: center;
@@ -31,11 +31,12 @@ div {
   border-radius: 10px;
 }
 
-.button > div {
+.rawButton > div {
   font-size: 24px;
+  text-align: center;
 }
 
-.button > div ~ div {
+.rawButton > div ~ div {
   font-size: 12px;
 }
 
@@ -51,6 +52,22 @@ div {
 
 .button.emphasized {
   border: 3px solid black;
+}
+
+#numTilesButton {
+  cursor: default;
+}
+
+#numTilesDisplay {
+  font-size: 24px;
+}
+
+.numTilesArrow {
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  width: 50%;
+  height: 20%;
 }
 
 #gameWrapper {

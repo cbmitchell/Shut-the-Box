@@ -9,8 +9,9 @@
 
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <script type="text/javascript" src="jquery.js"></script>
-  
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +22,8 @@
 
   let sum = 0;
   let tempSum = 0;
-  let n = 12;
+  let n = 9;
+  let tempN = n;
   let numDice = Math.ceil(n*(4/18));
   let score = (n*(n+1))/2;
   let availableNums = Array(n).fill(true);
@@ -29,13 +31,18 @@
   let selectedNums = Array(n).fill(false);
 
   const TOTAL_WIDTH_IN_PIXELS = 360;
+  const MAX_TILES = 64;
+  const MIN_TILES = 9;
 
   const setupNumButtons = function() {
-    const numRows = Math.floor(Math.sqrt(n));
     const numCols = Math.ceil(Math.sqrt(n));
+    const numRows = Math.ceil(n / numCols);
     const cellWidth = TOTAL_WIDTH_IN_PIXELS / numCols;
     const cellHeight = cellWidth;
     const numbersWrapper = document.getElementById("numbersWrapper");
+    while (numbersWrapper.firstChild) {
+      numbersWrapper.removeChild(numbersWrapper.lastChild);
+    }
     numbersWrapper.style.height = (cellHeight * numRows).toString() + "px";
     numbersWrapper.style.width = TOTAL_WIDTH_IN_PIXELS.toString() + "px";
     for (let num = 0; num < n; num++) {
@@ -57,6 +64,9 @@
   const setupDice = function() {
     const dieWidth = TOTAL_WIDTH_IN_PIXELS / numDice;
     const diceWrapper = document.getElementById("diceWrapper");
+    while (diceWrapper.firstChild) {
+      diceWrapper.removeChild(diceWrapper.lastChild);
+    }
     diceWrapper.style.width = TOTAL_WIDTH_IN_PIXELS.toString() + "px";
     diceWrapper.style.height = Math.min(dieWidth, 120).toString() + "px";
     for (let die = 0; die < numDice; die++) {
@@ -70,6 +80,11 @@
       dieNode.style.maxHeight = "100px";
       diceWrapper.appendChild(dieNode);
     }
+  };
+
+  const updateNumTilesDisplay = function() {
+    const numTilesDisplay = document.getElementById("numTilesDisplay");
+    numTilesDisplay.innerHTML = tempN.toString();
   };
 
   const rollDice = function() {
@@ -195,7 +210,6 @@
       }
     }
     solutions = checkSolutionsHelper(unusedNums, sum - tempSum, 0);
-    //console.log(solutions);
     return solutions;
   };
   
@@ -205,13 +219,10 @@
     let solutions = [];
     for (let j = i; k <= tri(arr[j]); j++) {
       let subSolutions = [];
-      //console.log("Trying " + arr[j].toString());
       if (arr[j] == k) {
-        //console.log("Finishing with " + arr[j].toString());
         subSolutions.push([]);
       }
       if (arr[j] < k) {
-        //console.log("Continuing with " + arr[j].toString());
         subSolutions = checkSolutionsHelper(arr, k - arr[j], j+1);
       }
       for (let s = 0; s < subSolutions.length; s++) {
@@ -226,7 +237,6 @@
   };
 
   const updateAvailableNums = function() {
-    //console.log("Updating available nums...");
     let solutions = checkSolutions();
     solutions = solutions.flat();
     for (let i = 0; i < n; i++) {
@@ -258,12 +268,17 @@
   };
   
   const newGame = function() {
+    n = tempN;
     sum = 0;
     tempSum = 0;
     score = (n*(n+1))/2;
+    numDice = Math.ceil(n*(4/18));
     availableNums = Array(n).fill(true);
     usedNums = Array(n).fill(false);
     selectedNums = Array(n).fill(false);
+    setupNumButtons();
+    setupDice();
+    updateNumTilesDisplay();
     rollDice();
   };
 
@@ -277,6 +292,13 @@
     console.log("usedNums = " + usedNums.toString());
   };
 
+  const changeNumTiles = function(d) {
+    if (tempN + d <= MAX_TILES && tempN + d >= MIN_TILES) {
+      tempN += d;
+      updateNumTilesDisplay();
+    }
+  };
+
   document.addEventListener("keypress", function(event) {
     if (event.keyCode == 13) {
       newGame();
@@ -284,11 +306,15 @@
     if (event.keyCode == 32) {
       rollDice();
     }
+    if (event.keyCode == 77) {
+      main();
+    }
   });
 
   const main = function() {
     setupNumButtons();
     setupDice();
+    updateNumTilesDisplay();
     rollDice();
   };
 
@@ -302,11 +328,16 @@
     <div id="numbersWrapper"></div>
     <div id="diceWrapper" class="wrapper"></div>
     <div id="buttonWrapper" class="wrapper">
-      <div id="rollDiceButton" class="button disabled" onclick="rollDice()">
+      <div id="rollDiceButton" class="button rawButton disabled" onclick="rollDice()">
         <div>Roll</div>
         <div>(space bar)</div>
       </div>
-      <div id="newGameButton" class="button" onclick="newGame()">
+      <div id="numTilesButton" class="button">
+        <div class="numTilesArrow" onclick="changeNumTiles(1)">^</div>
+        <div id="numTilesDisplay"></div>
+        <div class="numTilesArrow" onclick="changeNumTiles(-1)">v</div>
+      </div>
+      <div id="newGameButton" class="button rawButton" onclick="newGame()">
         <div>New Game</div>
         <div>(enter key)</div>
       </div>
