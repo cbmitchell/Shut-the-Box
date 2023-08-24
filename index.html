@@ -299,15 +299,18 @@
     }
   };
 
-  document.addEventListener("keypress", function(event) {
+  document.addEventListener("keydown", function(event) {
     if (event.keyCode == 13) {
       newGame();
     }
     if (event.keyCode == 32) {
       rollDice();
     }
-    if (event.keyCode == 77) {
-      main();
+    if (event.keyCode == 38) {
+      changeNumTiles(1);
+    }
+    if (event.keyCode == 40) {
+      changeNumTiles(-1);
     }
   });
 
