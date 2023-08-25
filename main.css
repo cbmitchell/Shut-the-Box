@@ -110,8 +110,6 @@ div {
   justify-content: center;
   width: 100px;
   height: 100px;
-  margin-left: 20px;
-  margin-top: 20px;
   border-radius: 10px;
   float: left;
   font-size: 32px;
@@ -146,7 +144,21 @@ div {
   color: grey;
 }
 
+#numbersScoreWrapper > div {
+  float: left;
+}
+
 #numbersWrapper {
 /*  height: 360px;*/
 /*  height: inherit;*/
+}
+
+#scoreDisplay {
+  background-color: turquoise;
+  z-index: 1;
+}
+
+#scoreProgressBar {
+  background-color: paleturquoise;
+  z-index: 2;
 }

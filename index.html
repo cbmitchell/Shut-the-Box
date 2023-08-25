@@ -31,20 +31,39 @@
   let selectedNums = Array(n).fill(false);
 
   const TOTAL_WIDTH_IN_PIXELS = 360;
+  const SCORE_WIDTH = 36;
   const MAX_TILES = 64;
   const MIN_TILES = 9;
+  
+  const setupScoreDisplay = function() {
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    scoreDisplay.style.width = SCORE_WIDTH.toString() + "px";
+    const scoreProgressBar = document.getElementById("scoreProgressBar");
+    scoreProgressBar.style.height = (100 - (score / tri(n) * 100)).toString() + "%";
+    scoreProgressBar.style.width = SCORE_WIDTH.toString() + "px";
+  }
 
   const setupNumButtons = function() {
     const numCols = Math.ceil(Math.sqrt(n));
     const numRows = Math.ceil(n / numCols);
-    const cellWidth = TOTAL_WIDTH_IN_PIXELS / numCols;
+    const cellWidth = (TOTAL_WIDTH_IN_PIXELS - SCORE_WIDTH) / numCols;
     const cellHeight = cellWidth;
+    
+    const numbersScoreWrapper = document.getElementById("numbersScoreWrapper");
+    numbersScoreWrapper.style.height = (cellHeight * numRows).toString() + "px";
+    numbersScoreWrapper.style.width = TOTAL_WIDTH_IN_PIXELS.toString() + "px";
+    
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    scoreDisplay.style.height = (cellHeight * numRows - (cellWidth * 0.2)).toString() + "px";
+    scoreDisplay.style.marginTop = (cellWidth * 0.2).toString() + "px";
+    
     const numbersWrapper = document.getElementById("numbersWrapper");
+    numbersWrapper.style.height = (cellHeight * numRows).toString() + "px";
+    numbersWrapper.style.width = (TOTAL_WIDTH_IN_PIXELS - SCORE_WIDTH).toString() + "px";
     while (numbersWrapper.firstChild) {
       numbersWrapper.removeChild(numbersWrapper.lastChild);
     }
-    numbersWrapper.style.height = (cellHeight * numRows).toString() + "px";
-    numbersWrapper.style.width = TOTAL_WIDTH_IN_PIXELS.toString() + "px";
+    
     for (let num = 0; num < n; num++) {
       const numString = (num+1).toString();
       const cellNode = document.createElement("div");
@@ -55,8 +74,7 @@
       cellNode.style.width = (cellWidth * 0.8).toString() + "px";
       cellNode.style.height = (cellWidth * 0.8).toString() + "px";
       cellNode.style.marginTop = (cellWidth * 0.2).toString() + "px";
-      cellNode.style.marginLeft = (cellWidth * 0.1).toString() + "px";
-      cellNode.style.marginRight = (cellWidth * 0.1).toString() + "px";
+      cellNode.style.marginRight = (cellWidth * 0.2).toString() + "px";
       numbersWrapper.appendChild(cellNode);
     }
   };
@@ -94,6 +112,11 @@
     numTilesDisplay.innerHTML = tempN.toString();
   };
 
+  const updateScoreProgressBar = function() {
+    const scoreProgressBar = document.getElementById("scoreProgressBar");
+    scoreProgressBar.style.height = (100 - (score / tri(n) * 100)).toString() + "%";
+  }
+
   const rollDice = function() {
     if (sum != tempSum) {
       console.log("You must choose a combination of available tiles that add up to a total of " + sum.toString() + " before you may reroll.");
@@ -126,6 +149,7 @@
       }
     }
     calculateScore();
+    updateScoreProgressBar();
   };
 
   const calculateScore = function() {
@@ -323,6 +347,7 @@
 
   const main = function() {
     setupNumButtons();
+    setupScoreDisplay();
     setupDice();
     updateNumTilesDisplay();
     rollDice();
@@ -335,7 +360,12 @@
   
   <div id="instructions"></div>
   <div id="gameWrapper" class="wrapper">
-    <div id="numbersWrapper"></div>
+    <div id="numbersScoreWrapper">
+      <div id="numbersWrapper"></div>
+      <div id="scoreDisplay">
+        <div id="scoreProgressBar"></div>
+      </div>
+    </div>
     <div id="diceWrapper" class="wrapper"></div>
     <div id="buttonWrapper" class="wrapper">
       <div id="rollDiceButton" class="button rawButton disabled" onclick="rollDice()">
