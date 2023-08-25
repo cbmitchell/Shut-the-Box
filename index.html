@@ -38,6 +38,7 @@
   const setupScoreDisplay = function() {
     const scoreDisplay = document.getElementById("scoreDisplay");
     scoreDisplay.style.width = SCORE_WIDTH.toString() + "px";
+    
     const scoreProgressBar = document.getElementById("scoreProgressBar");
     scoreProgressBar.style.height = (100 - (score / tri(n) * 100)).toString() + "%";
     scoreProgressBar.style.width = SCORE_WIDTH.toString() + "px";
@@ -115,6 +116,11 @@
   const updateScoreProgressBar = function() {
     const scoreProgressBar = document.getElementById("scoreProgressBar");
     scoreProgressBar.style.height = (100 - (score / tri(n) * 100)).toString() + "%";
+    
+    const scoreDisplayTexts = document.getElementsByClassName("scoreDisplayText");
+    for (let i = 0; i < scoreDisplayTexts.length; i++) {
+      scoreDisplayTexts[i].innerHTML = "SCORE: " + score.toString();
+    }
   }
 
   const rollDice = function() {
@@ -376,7 +382,10 @@
     <div id="numbersScoreWrapper">
       <div id="numbersWrapper"></div>
       <div id="scoreDisplay">
-        <div id="scoreProgressBar"></div>
+        <div id="scoreDisplayTextUnder" class="scoreDisplayText">SCORE:</div>
+        <div id="scoreProgressBar">
+          <div id="scoreDisplayTextOver" class="scoreDisplayText">SCORE:</div>
+        </div>
       </div>
     </div>
     <div id="diceWrapper" class="wrapper"></div>

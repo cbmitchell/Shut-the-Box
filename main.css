@@ -9,6 +9,7 @@ h2 {
 
 div {
   box-sizing: border-box;
+  position: relative;
 }
 
 /*
@@ -154,11 +155,33 @@ div {
 }
 
 #scoreDisplay {
+  display: flex;
+  justify-content: center;
   background-color: turquoise;
+  z-index: 0;
+  color: white;
+}
+
+#scoreDisplay div {
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.scoreDisplayText {
+  position: absolute;
+  top: 10px;
+  writing-mode: vertical-rl;
   z-index: 1;
 }
 
 #scoreProgressBar {
   background-color: paleturquoise;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
   z-index: 2;
+  color: darkturquoise;
 }
