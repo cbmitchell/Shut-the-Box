@@ -47,7 +47,7 @@ div {
 }
 
 #buttonWrapper {
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 .button.emphasized {
@@ -94,7 +94,10 @@ div {
 }
 
 #diceWrapper {
+  display: flex;
   height: 100px;
+  margin: auto;
+  justify-content: center;
 }
 
 .button:hover {

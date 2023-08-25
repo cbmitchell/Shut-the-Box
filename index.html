@@ -69,15 +69,22 @@
     }
     diceWrapper.style.width = TOTAL_WIDTH_IN_PIXELS.toString() + "px";
     diceWrapper.style.height = Math.min(dieWidth, 120).toString() + "px";
+    diceWrapper.style.marginTop = "20px";
     for (let die = 0; die < numDice; die++) {
       const dieNode = document.createElement("div");
       dieNode.classList.add("dice");
       dieNode.style.width = (dieWidth * 0.8).toString() + "px";
       dieNode.style.height = (dieWidth * 0.8).toString() + "px";
-      dieNode.style.marginTop = Math.min((dieWidth * 0.2), 20).toString() + "px";
       dieNode.style.marginLeft = (dieWidth * 0.1).toString() + "px";
       dieNode.style.marginRight = (dieWidth * 0.1).toString() + "px";
+      dieNode.style.maxWidth = "100px";
       dieNode.style.maxHeight = "100px";
+      dieNode.style.borderRadius = Math.min(dieWidth * 0.15, 10).toString() + "px";
+      const dieIconNode = document.createElement("img");
+      dieIconNode.setAttribute("src", "DiceIcons/DiceIcons.009.png"); // ***
+      dieIconNode.setAttribute("width", Math.min((dieWidth * 0.65), 65).toString() + "px");
+      dieIconNode.setAttribute("height", Math.min((dieWidth * 0.65), 65).toString() + "px");
+      dieNode.appendChild(dieIconNode);
       diceWrapper.appendChild(dieNode);
     }
   };
@@ -98,7 +105,7 @@
     for (let i = 0; i < dice.length; i++) {
       let roll = Math.floor(Math.random() * 6) + 1;
       sum += roll;
-      dice.item(i).innerHTML = roll.toString();
+      dice.item(i).firstChild.setAttribute("src", "DiceIcons/DiceIcons.00" + roll.toString() + ".png");
     }
     let rollButton = document.getElementById("rollDiceButton");
     rollButton.classList.add("disabled");
