@@ -188,13 +188,26 @@
     }
     return false;
   };
+  
+  const spellWithDice = function(str) {
+    numDice = str.length;
+    setupDice();
+    let dice = document.getElementsByClassName("dice");
+    for (let i = 0; i < dice.length; i++) {
+      if (str[i] != ' ') {
+        dice.item(i).firstChild.setAttribute("src", "Lettering/Squares/letter_" + str[i] + ".png");
+      }
+    }
+  };
 
   const handleGameOver = function() {
     if (checkWin()) {
       console.log("You shut the box!");
+      spellWithDice("you win");
     } else if (checkLose()) {
       console.log("—— GAME OVER ——");
       console.log("Final Score: " + score);
+      spellWithDice("game over");
     }
   };
 
