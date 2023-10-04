@@ -100,7 +100,7 @@
       dieNode.style.maxHeight = "100px";
       dieNode.style.borderRadius = Math.min(dieWidth * 0.15, 10).toString() + "px";
       const dieIconNode = document.createElement("img");
-      dieIconNode.setAttribute("src", "DiceIcons/DiceIcons.009.png"); // ***
+      dieIconNode.setAttribute("src", "icons/dice_icons/DiceIcons.009.png"); // ***
       dieIconNode.setAttribute("width", Math.min((dieWidth * 0.65), 65).toString() + "px");
       dieIconNode.setAttribute("height", Math.min((dieWidth * 0.65), 65).toString() + "px");
       dieNode.appendChild(dieIconNode);
@@ -134,7 +134,7 @@
     for (let i = 0; i < dice.length; i++) {
       let roll = Math.floor(Math.random() * 6) + 1;
       sum += roll;
-      dice.item(i).firstChild.setAttribute("src", "DiceIcons/DiceIcons.00" + roll.toString() + ".png");
+      dice.item(i).firstChild.setAttribute("src", "icons/dice_icons/DiceIcons.00" + roll.toString() + ".png");
     }
     let rollButton = document.getElementById("rollDiceButton");
     rollButton.classList.add("disabled");
@@ -349,6 +349,11 @@
     }
   };
 
+  const toggleInfoPopup = function() {
+    const infoPopup = document.getElementById("infoPopup");
+    infoPopup.classList.toggle("hidden");
+  };
+
   document.addEventListener("keydown", function(event) {
     if (event.keyCode == 13) {
       newGame();
@@ -376,7 +381,25 @@
 
 <body onload="main()">
   <h2>Shut the Box</h2>
-  
+  <img src="icons/info_icon.png" id="infoIcon" onclick="toggleInfoPopup()">
+  <div id="infoPopup">
+    <div id="infoPopupTabWrapper">
+      <div class="infoTab selected">About</div>
+      <div class="infoTab">Rules</div>
+      <div class="infoTab">Controls</div>
+      <div class="infoTab">Other</div>
+    </div>
+    <img src="icons/close_icon.png" id="closeIcon" onclick="toggleInfoPopup()">
+    <h3>Welcome to Shut the Box!</h3>
+    <p>To learn more about Shut the Box, check out its <a href="https://en.wikipedia.org/wiki/Shut_the_box" target="_blank">Wikipedia page</a>.</p>
+    <h4>How to Play</h4>
+    <ol>
+      <li>Roll the dice and then total their results.</li>
+      <li>Select any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll.</li>
+      <li>Repeat the above steps until you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum, at which point the game ends.</li>
+    </ol>
+    <p>First, you roll the dice and then sum their results. Then, you must choose any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll. Once you've used a tile in this way, that tile becomes unavailable for subsequent rolls. The game ends when you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum. When the game ends, your final score is determined by totaling the values of all your unused tiles, and your goal is to get as low a score as possible. If you manage to use all the tiles and get a score of 0, then the game ends and you've successfully "shut the box!"</p>
+  </div>
   <div id="instructions"></div>
   <div id="gameWrapper" class="wrapper">
     <div id="numbersScoreWrapper">
