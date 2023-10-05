@@ -406,26 +406,43 @@
   <h2>Shut the Box</h2>
   <img src="icons/info_icon.png" id="infoIcon" onclick="toggleInfoPopup()">
   <div id="infoPopupWrapper">
+    <img src="icons/close_icon.png" id="closeIcon" onclick="toggleInfoPopup()">
     <div id="infoPopupWindow">
       <div id="aboutPage" class="infoPage">
         <h3>Welcome to Shut the Box!</h3>
         <p>To learn more about Shut the Box, check out its <a href="https://en.wikipedia.org/wiki/Shut_the_box" target="_blank">Wikipedia page</a>.</p>
+        <p>This is a web-based implementation of Shut the Box! It was coded in vanilla JavaScript & CSS by Chris Mitchell, who will probably put a link to his personal website here once it's in a state worthy of being shown off.</p>
+        <p>This implementation allows you to play with up to 64 numbered tiles, and automatically adjusts the number of dice accordingly.</p>
+        <p>To start playing, just hit the X in the upper corner of this popup. To bring this popup back, simply use the information icon at the top right corner of the screen.</p>
+        <p>Good luck!</p>
+      </div>
+      <div id="rulesPage" class="infoPage hidden">
         <h4>How to Play</h4>
         <ol>
           <li>Roll the dice and then total their results.</li>
           <li>Select any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll.</li>
           <li>Repeat the above steps until you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum, at which point the game ends.</li>
         </ol>
-        <p>First, you roll the dice and then sum their results. Then, you must choose any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll. Once you've used a tile in this way, that tile becomes unavailable for subsequent rolls. The game ends when you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum. When the game ends, your final score is determined by totaling the values of all your unused tiles, and your goal is to get as low a score as possible. If you manage to use all the tiles and get a score of 0, then the game ends and you've successfully "shut the box!"</p>
-      </div>
-      <div id="rulesPage" class="infoPage hidden">
-        <h4>Rules Info</h4>
+        <h4>Rules</h4>
+        <ul>
+          <li>When the game ends, your final score is determined by totaling the values of all your unused tiles.</li>
+          <li>The goal is to get as low a score as possible.</li>
+          <li>If you manage to use all the tiles and get a score of 0, then the game ends and you've successfully "shut the box!"</li>
+          <li>Once you've used a tile, that tile will no longer be available for the rest of the game.</li>
+        </ul>
       </div>
       <div id="controlsPage" class="infoPage hidden">
-        <h4>Controlw Info</h4>
+        <p><b>Select tiles</b> by simply clicking on the ones you want. Click on an already selected tile to deselect it.</p>
+        <p><b>Roll the dice</b> by either pressing the "Roll" button at the bottom left or hitting the spacebar. Note that you may only roll once you've selected a combination of tiles that add up to your current roll.</p>
+        <p><b>Start a new game</b> by hitting the "New Game" button in the lower right or pressing the enter key.</p>
+        <p><b>Change the number of tiles</b> you're playing with using the control in the bottom center. Either click the up and down arrows or use the up and down arrow keys to adjust the number. Once you have the number you want, start a new game for it to take effect. The number of dice will be adjusted automatically.</p>
+        <p><b>Bring up this info again</b> by clicking the information icon in the top right corner of the screen.</p>
       </div>
       <div id="otherPage" class="infoPage hidden">
         <h4>Other Info</h4>
+        <p>If you'd like to see the code and the development history of this page for yourself, then feel free to check out the <a href="https://github.com/cbmitchell/Shut-the-Box" target="_blank">GitHub repo</a> the code is hosted on!</p>
+        <p>Between you and me, I've really enjoyed making this. One of my favorite parts was coming up with an algorithm to determine what tiles are viable for selection based on the target sum and the available tiles. It turned out to be a recursive function, and while it's <i>fairly</i> well-optimized, I might return to it at some point to try to optimize it even further. <a href="https://github.com/cbmitchell/Shut-the-Box/blob/22bdd5e2ed6f06fbcf8ea4b154c3159e583d1eb0/index.html#L255-L283" target="_blank">Here's the code if you're interested!</a></p>
+        <p>Setting up the automatic formatting of the tiles on the page was also an interesting challenge, as I hadn't done anything like that with JavaScript & CSS before. I'm still not entirely convinced my current implementation is the cleanest one, and I could probably have used a library or framework to do it more easily, but I enjoyed the challenge of doing it this way, and I like what I ended up with.</p>
       </div>
     </div>
     <div id="infoPopupTabPanel">
@@ -434,7 +451,6 @@
       <div id="controlsTab" class="infoTab" onclick="selectInfoTab('controls')">Controls</div>
       <div id="otherTab" class="infoTab" onclick="selectInfoTab('other')">Other</div>
     </div>
-    <img src="icons/close_icon.png" id="closeIcon" onclick="toggleInfoPopup()">
   </div>
   <div id="instructions"></div>
   <div id="gameWrapper" class="wrapper">
