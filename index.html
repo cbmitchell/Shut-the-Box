@@ -350,8 +350,31 @@
   };
 
   const toggleInfoPopup = function() {
-    const infoPopup = document.getElementById("infoPopup");
+    const infoPopup = document.getElementById("infoPopupWrapper");
     infoPopup.classList.toggle("hidden");
+  };
+
+  const selectInfoTab = function(selectedTabPrefix) {
+    switchSelectedInfoTab(selectedTabPrefix + "Tab");
+    switchInfoPage(selectedTabPrefix + "Page");
+  };
+
+  const switchSelectedInfoTab = function(selectedInfoTabId) {
+    const infoTabs = document.getElementsByClassName("infoTab");
+    for (let i = 0; i < infoTabs.length; i++) {
+       infoTabs[i].classList.remove("selected");
+    }
+    const selectedInfoTab = document.getElementById(selectedInfoTabId);
+    selectedInfoTab.classList.add("selected");
+  };
+
+  const switchInfoPage = function(selectedInfoPageId) {
+    const infoPages = document.getElementsByClassName("infoPage");
+    for (let i = 0; i < infoPages.length; i++) {
+       infoPages[i].classList.add("hidden");
+    }
+    const selectedInfoPage = document.getElementById(selectedInfoPageId);
+    selectedInfoPage.classList.remove("hidden");
   };
 
   document.addEventListener("keydown", function(event) {
@@ -382,23 +405,36 @@
 <body onload="main()">
   <h2>Shut the Box</h2>
   <img src="icons/info_icon.png" id="infoIcon" onclick="toggleInfoPopup()">
-  <div id="infoPopup">
-    <div id="infoPopupTabWrapper">
-      <div class="infoTab selected">About</div>
-      <div class="infoTab">Rules</div>
-      <div class="infoTab">Controls</div>
-      <div class="infoTab">Other</div>
+  <div id="infoPopupWrapper">
+    <div id="infoPopupWindow">
+      <div id="aboutPage" class="infoPage">
+        <h3>Welcome to Shut the Box!</h3>
+        <p>To learn more about Shut the Box, check out its <a href="https://en.wikipedia.org/wiki/Shut_the_box" target="_blank">Wikipedia page</a>.</p>
+        <h4>How to Play</h4>
+        <ol>
+          <li>Roll the dice and then total their results.</li>
+          <li>Select any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll.</li>
+          <li>Repeat the above steps until you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum, at which point the game ends.</li>
+        </ol>
+        <p>First, you roll the dice and then sum their results. Then, you must choose any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll. Once you've used a tile in this way, that tile becomes unavailable for subsequent rolls. The game ends when you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum. When the game ends, your final score is determined by totaling the values of all your unused tiles, and your goal is to get as low a score as possible. If you manage to use all the tiles and get a score of 0, then the game ends and you've successfully "shut the box!"</p>
+      </div>
+      <div id="rulesPage" class="infoPage hidden">
+        <h4>Rules Info</h4>
+      </div>
+      <div id="controlsPage" class="infoPage hidden">
+        <h4>Controlw Info</h4>
+      </div>
+      <div id="otherPage" class="infoPage hidden">
+        <h4>Other Info</h4>
+      </div>
+    </div>
+    <div id="infoPopupTabPanel">
+      <div id="aboutTab" class="infoTab selected" onclick="selectInfoTab('about')">About</div>
+      <div id="rulesTab" class="infoTab" onclick="selectInfoTab('rules')">Rules</div>
+      <div id="controlsTab" class="infoTab" onclick="selectInfoTab('controls')">Controls</div>
+      <div id="otherTab" class="infoTab" onclick="selectInfoTab('other')">Other</div>
     </div>
     <img src="icons/close_icon.png" id="closeIcon" onclick="toggleInfoPopup()">
-    <h3>Welcome to Shut the Box!</h3>
-    <p>To learn more about Shut the Box, check out its <a href="https://en.wikipedia.org/wiki/Shut_the_box" target="_blank">Wikipedia page</a>.</p>
-    <h4>How to Play</h4>
-    <ol>
-      <li>Roll the dice and then total their results.</li>
-      <li>Select any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll.</li>
-      <li>Repeat the above steps until you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum, at which point the game ends.</li>
-    </ol>
-    <p>First, you roll the dice and then sum their results. Then, you must choose any combination of the available numbered tiles such that the sum of all their numbers is equal to your roll. Once you've used a tile in this way, that tile becomes unavailable for subsequent rolls. The game ends when you get a roll for which there is no possible combination of remaining unused tiles that produce the desired sum. When the game ends, your final score is determined by totaling the values of all your unused tiles, and your goal is to get as low a score as possible. If you manage to use all the tiles and get a score of 0, then the game ends and you've successfully "shut the box!"</p>
   </div>
   <div id="instructions"></div>
   <div id="gameWrapper" class="wrapper">
