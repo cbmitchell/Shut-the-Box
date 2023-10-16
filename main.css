@@ -31,8 +31,8 @@ div {
   width: 320px;
   height: 480px;
   left: 50%;
-  top: 46%;
-  transform: translate(-50%, -50%);
+  top: 90px;
+  transform: translate(-50%);
   z-index: 2;
 }
 
